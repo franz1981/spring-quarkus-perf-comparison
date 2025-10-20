@@ -5,7 +5,7 @@
 
 # Example usage
 # 1) Run the Spring app 10 times
-# $ ./1strequest.sh "java -XX:ActiveProcessorCount=8 -Xms512m -Xmx512m -jar ../springboot3/target/app.jar" 10
+# $ ./1strequest.sh "java -XX:ActiveProcessorCount=8 -Xms512m -Xmx512m -jar ../springboot3/target/springboot3.jar" 10
 #
 # 2) Run the Quarkus app 10 times
 # $ ./1strequest.sh "java -XX:ActiveProcessorCount=8 -Xms512m -Xmx512m -jar ../quarkus3/target/quarkus-app/quarkus-run.jar" 10
