@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: springboot3
   datasource:
     username: fruits
     password: fruits
@@ -26,6 +28,11 @@ spring:
         # @simasch: Sets the hibernate batch size to be the same that Quarkus uses
         # see https://github.com/quarkusio/spring-quarkus-perf-comparison/pull/114
         default_batch_fetch_size: 16
+
+otel:
+  traces:
+    "sampler": traceidratio
+    "sampler.arg": 0.1
 
 # Turn on prometheus actuator endpoint
 management:
