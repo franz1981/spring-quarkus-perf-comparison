@@ -89,7 +89,7 @@ The script also has 3 dependencies that need to be resolved before it can be run
 
 ### Proper CPU affinity
 
-Proper CPU pinning is important for the performance of the benchmark to ensure proper isolation of the workloads.
+Proper CPU affinity is important for the performance of the benchmark to ensure proper isolation of the workloads.
 
 You need to have enough cpus in order to run this script. We recommend 15 cpus minimum allocated as follows:
 - 4 CPUs for the application
@@ -324,7 +324,7 @@ Runs [all the tests](#available-tests) against [all the runtimes](#available-run
 
 - **Version Specification:** It is strongly recommended to explicitly set the Quarkus and Spring Boot versions to ensure consistent and reproducible benchmarks.
 - **Remote Execution:** When using a HOST other than `LOCAL`, the `--user` (USER) parameter is required.
-- **Resource Constraints:** The `--cpus-*` options (CPU pinning) and `--jvm-memory` (memory constraints) use `taskset` to control resource allocation. Use `lscpu -e` to understand CPU topology and avoid sharing physical cores between workloads.
+- **Resource Constraints:** The `--cpus-*` options (CPU affinity) and `--jvm-memory` (memory constraints) use `taskset` to control resource allocation. Use `lscpu -e` to understand CPU topology and avoid sharing physical cores between workloads.
 - **Profiling:** When profiling is enabled, async profiler will be used to generate JFR files or flamegraphs depending on the selected option.
 
 ## Exit Codes
