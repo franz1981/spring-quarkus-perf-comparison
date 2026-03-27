@@ -2,16 +2,9 @@ name: Branch sync
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
     branches:
       - main
       - ootb
-    paths-ignore:
-      - '**/application.yml'
 
 jobs:
   prep-changes:
