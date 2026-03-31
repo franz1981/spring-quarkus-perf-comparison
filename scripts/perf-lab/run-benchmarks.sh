@@ -57,6 +57,7 @@ help() {
   echo "                                                              Ignored if --java-home is set"
   echo "  --jvm-args <JVM_ARGS>                                   Any runtime JVM args to be passed to the apps"
   echo "  --jvm-memory <JVM_MEMORY>                               JVM Memory setting (i.e. -Xmx -Xmn -Xms)"
+  echo "                                                              Default: ${JVM_MEMORY}"
   echo "  --native-quarkus-build-options <NATIVE_QUARKUS_OPTS>    Native build options to be passed to Quarkus native build process"
   echo "  --native-spring3-build-options <NATIVE_SPRING3_OPTS>    Native build options to be passed to Spring 3.x native build process"
   echo "  --native-spring4-build-options <NATIVE_SPRING4_OPTS>    Native build options to be passed to Spring 4.x native build process"
