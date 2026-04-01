@@ -65,7 +65,7 @@ help() {
   echo "                                                              Default: ${OUTPUT_DIR}"
   echo "  --profiler <PROFILER>                                   Enable profiling"
   echo "                                                              Accepted values: none, jfr, syncjfr, flamegraph"
-  echo "                                                              jfr/flamegraph use async profiler, syncjfr uses JVM sync profiler"
+  echo "                                                              'jfr' and 'flamegraph' use async-profiler. 'syncjfr' uses the built-in JVM Java Flight Recorder (JFR)."
   echo "                                                              Default: ${PROFILER}"
   echo "  --quarkus-build-config-args <QUARKUS_BUILD_CONFIG_ARGS> Quarkus app configuration properties fixed at build time"
   echo "  --quarkus-version <QUARKUS_VERSION>                     The Quarkus version to use"
