@@ -662,7 +662,7 @@ scripts:
         async: true
       with:
         name: pidstat
-        command: pidstat -u -p ${{pid}} 1
+        command: pidstat -u -w -t -p ${{pid}} 1
         log_file: ${{log_dir}}/pidstat-${{runtime_name}}-${{iteration}}.log
     - script:
         name: monitor-process
@@ -682,27 +682,21 @@ scripts:
     - script: monitor-otel-lgtm
 
   monitor-otel-lgtm:
-    - sh: LGTM_PID=$(${{PROJ_REPO_DIR}}/scripts/infra.sh -o)
-    - sh: echo $LGTM_PID
-    - set-state: LGTM_PID
     - script:
         name: monitor-process
         async: true
       with:
         name: lgtm-pidstat
-        command: pidstat -u -p $(pgrep -d , -P ${{LGTM_PID}}) 1
+        command: pidstat -u -w -p ALL -G "grafana|loki|otelcol|prometheus|tempo|pyroscope" 1
         log_file: ${{log_dir}}/lgtm-pidstat-${{runtime_name}}-${{iteration}}.log
 
   monitor-postgres:
-    - sh: POSTGRES_PID=$(${{PROJ_REPO_DIR}}/scripts/infra.sh -r)
-    - sh: echo $POSTGRES_PID
-    - set-state: POSTGRES_PID
     - script:
         name: monitor-process
         async: true
       with:
         name: postgres-pidstat
-        command: pidstat -u -p $(pgrep -d , -P ${{POSTGRES_PID}}) 1
+        command: pidstat -u -w -p ALL -G "postgres" 1
         log_file: ${{log_dir}}/postgres-pidstat-${{runtime_name}}-${{iteration}}.log
 
   monitor-process:
