@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.config;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
