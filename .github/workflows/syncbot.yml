@@ -31,8 +31,9 @@ jobs:
           git config user.name syncbot
           git config user.email github-actions@github.com
           
-          # Fetch all branches
+          # Fetch all branches and the PR head (which may be from a fork)
           git fetch origin
+          git fetch origin pull/${{ github.event.pull_request.number }}/head
           
           # Get the source branch name and target branch
           SOURCE_BRANCH="${{ github.head_ref }}"
