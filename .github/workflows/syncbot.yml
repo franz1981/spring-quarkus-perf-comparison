@@ -64,10 +64,16 @@ jobs:
           for commit in $COMMITS; do
             echo "Cherry-picking $commit"
             git cherry-pick $commit || {
-              echo "Cherry-pick failed for $commit"
-              git cherry-pick --abort
-              echo "cherry_pick_failed=true" >> $GITHUB_OUTPUT
-              exit 1
+              # If the cherry-pick is empty (change already exists on target), skip it
+              if git diff --cached --quiet; then
+                echo "Cherry-pick of $commit is empty (already applied), skipping"
+                git cherry-pick --skip
+              else
+                echo "Cherry-pick failed for $commit"
+                git cherry-pick --abort
+                echo "cherry_pick_failed=true" >> $GITHUB_OUTPUT
+                exit 1
+              fi
             }
           done
           
