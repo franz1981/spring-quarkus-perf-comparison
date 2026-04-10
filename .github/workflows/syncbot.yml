@@ -60,6 +60,7 @@ jobs:
           
           # Cherry-pick each commit
           echo "Cherry-picking commits..."
+          SKIPPED_COMMITS=""
           for commit in $COMMITS; do
             echo "Cherry-picking $commit"
             git cherry-pick $commit || {
@@ -68,18 +69,21 @@ jobs:
                 echo "Cherry-pick of $commit is empty (already applied), skipping"
                 git cherry-pick --skip
               else
-                echo "Cherry-pick failed for $commit"
+                echo "Cherry-pick of $commit conflicted, skipping"
                 git cherry-pick --abort
-                echo "cherry_pick_failed=true" >> $GITHUB_OUTPUT
-                exit 1
+                SKIPPED_COMMITS="$SKIPPED_COMMITS $commit"
               fi
             }
           done
-          
-          echo "Successfully cherry-picked all commits"
+
+          if [ -n "$SKIPPED_COMMITS" ]; then
+            echo "skipped_commits=$SKIPPED_COMMITS" >> $GITHUB_OUTPUT
+            echo "Some commits were skipped due to conflicts:$SKIPPED_COMMITS"
+          fi
+
+          echo "Cherry-pick complete"
 
       - name: Push sync branch and create PR
-        if: steps.cherry-pick.outputs.cherry_pick_failed != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,22 +91,30 @@ jobs:
           SOURCE_BRANCH="${{ steps.cherry-pick.outputs.source_branch }}"
           TARGET_BRANCH="${{ steps.cherry-pick.outputs.target_branch }}"
           SYNC_BRANCH="${{ steps.cherry-pick.outputs.sync_branch }}"
-          
+          SKIPPED="${{ steps.cherry-pick.outputs.skipped_commits }}"
+
           # Push the sync branch
           git push origin $SYNC_BRANCH --force
           echo "Successfully pushed sync branch"
-          
+
           # Create PR using GitHub CLI
           PR_TITLE="[Sync] $(gh pr view ${{ github.event.pull_request.number }} --json title --jq .title)"
           PR_BODY="Automated sync of PR #${{ github.event.pull_request.number }} from \`$SOURCE_BRANCH\` to \`$TARGET_BRANCH\`
-          
-          Syncbot will not be offended sync isn't appropriate and you close this PR.
-          
+
+          Syncbot will not be offended if the sync isn't appropriate and you close this PR.
+
           Original PR: #${{ github.event.pull_request.number }}"
-          
+
+          if [ -n "$SKIPPED" ]; then
+            PR_BODY="$PR_BODY
+
+          **Note:** The following commits were skipped due to conflicts and may need manual syncing:
+          $(for sha in $SKIPPED; do echo "- \`$sha\`"; done)"
+          fi
+
           # Check if PR already exists
           EXISTING_PR=$(gh pr list --head $SYNC_BRANCH --base $TARGET_BRANCH --json number --jq '.[0].number' || echo "")
-          
+
           if [ -n "$EXISTING_PR" ]; then
             echo "PR already exists: #$EXISTING_PR"
             gh pr edit $EXISTING_PR --body "$PR_BODY"
@@ -111,8 +123,8 @@ jobs:
             echo "Created new PR: $NEW_PR"
           fi
 
-      - name: Update PR comment with matched PR
-        if: steps.cherry-pick.outputs.cherry_pick_failed != 'true'
+      - name: Update PR comment on success
+        if: steps.cherry-pick.outputs.skipped_commits == ''
         uses: quarkusio/action-helpers@main
         with:
           action: maintain-one-comment
@@ -121,12 +133,12 @@ jobs:
             🤖 This PR has been synchronized to the `${{ steps.cherry-pick.outputs.target_branch }}` branch. 🔄
           pr-number: ${{ github.event.pull_request.number }}
 
-      - name: Update PR comment with matched PR
-        if: steps.cherry-pick.outputs.cherry_pick_failed == 'true'
+      - name: Update PR comment on partial sync
+        if: steps.cherry-pick.outputs.skipped_commits != ''
         uses: quarkusio/action-helpers@main
         with:
           action: maintain-one-comment
           github-token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            🤖 It was too hard to synch this change to the `${{ steps.cherry-pick.outputs.target_branch }}` branch. 😢
+            🤖 This PR has been partially synchronized to the `${{ steps.cherry-pick.outputs.target_branch }}` branch. Some commits were skipped due to conflicts and may need manual syncing. 🔄
           pr-number: ${{ github.event.pull_request.number }}
