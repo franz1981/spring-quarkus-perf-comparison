@@ -6,6 +6,10 @@ on:
       - main
       - ootb
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   prep-changes:
     runs-on: ubuntu-latest
