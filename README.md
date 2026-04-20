@@ -14,14 +14,14 @@ Here are the principles we used when making implementation choices:
     - If a change is made that changes the architecture of an application (i.e. moving blocking to reactive, using virtual threads, etc), then these changes should be applied to all the versions of the applications.
 - **Normal-ness**
     - Realism is more important than squeezing out every last bit of performance.
+- **Testing the framework, not the infrastructure**
+  -  Measurements should be measuring the performance of the frameworks, rather than supporting infrastructure like the database. In practice this means we want the experimental setup to be CPU-bound.
 - **High quality**
     - Applications should model best practices.
     - Although we want the application to represent a typical usage, someone who copies it shouldn't ever be copying 'wrong' or bad code. 
 - **Easy to try at home**
     - Running measurements should be easy for a non-expert to do with a minimum of infrastructure setup, and it should also be rigorous in terms of performance best practices.
     - These two goals are contradictory, unfortunately! To try and achieve both, we have two versions of the scripts, one optimised for simplicity, and one for methodological soundness.
-- **Testing the framework, not the infrastructure**
-  -  Measurements should be measuring the performance of the frameworks, rather than supporting infrastructure like the database. In practice this means we want the experimental setup to be CPU-bound.
 
 
 ## Goals
