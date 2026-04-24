@@ -341,8 +341,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   NATIVE_SPRING3_BUILD_OPTIONS=""
   NATIVE_SPRING4_BUILD_OPTIONS=""
   PROFILER="none"
-  PROFILER_ARGS="--threads"
-  PROFILER_EVENTS="context-switches"
+  PROFILER_ARGS=""
+  PROFILER_EVENTS="cpu"
   QUARKUS_BUILD_CONFIG_ARGS=""
   QUARKUS_VERSION=""
   ALLOWED_RUNTIMES=("quarkus3-jvm" "quarkus3-leyden" "quarkus3-virtual" "quarkus3-virtual-leyden" "quarkus3-native" "spring3-jvm" "spring3-leyden" "spring3-virtual" "spring3-virtual-leyden" "spring3-jvm-aot" "spring3-native" "spring4-jvm" "spring4-leyden" "spring4-virtual" "spring4-virtual-leyden" "spring4-jvm-aot" "spring4-native")
