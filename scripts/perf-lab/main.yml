@@ -750,7 +750,7 @@ scripts:
     - script: monitor-otel-lgtm
 
   pgbench-rtt-test:
-    - sh: echo "SELECT 1;" > /tmp/pgbench-rtt.sql
+    - sh: printf 'SELECT id, name, description FROM fruits;\nSELECT store_id, fruit_id, price FROM store_fruit_prices WHERE fruit_id IN (1,2,3,4,5,6,7,8,9,10);\n' > /tmp/pgbench-rtt.sql
     - sh: PGPASSWORD=fruits taskset -c ${{config.resources.cpu.app}} pgbench -h localhost -U fruits -c 1 -j 1 -T 10 -n -M prepared -f /tmp/pgbench-rtt.sql fruits 2>&1 | tee ${{REPO_DIR}}/logs/pgbench-rtt-${{RUNTIMECMD.name}}-${{ITERATION}}.log
     - queue-download: ${{REPO_DIR}}/logs/pgbench-rtt-${{RUNTIMECMD.name}}-${{ITERATION}}.log
 
