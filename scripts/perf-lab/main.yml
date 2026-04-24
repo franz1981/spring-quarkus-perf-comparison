@@ -751,7 +751,7 @@ scripts:
 
   pgbench-rtt-test:
     - sh: echo "SELECT 1;" > /tmp/pgbench-rtt.sql
-    - sh: PGPASSWORD=fruits taskset -c ${{config.resources.cpu.app}} pgbench -h localhost -U fruits -d fruits -c 1 -j 1 -T 10 -n -M prepared -f /tmp/pgbench-rtt.sql 2>&1 | tee ${{REPO_DIR}}/logs/pgbench-rtt-${{RUNTIMECMD.name}}-${{ITERATION}}.log
+    - sh: PGPASSWORD=fruits taskset -c ${{config.resources.cpu.app}} pgbench -h localhost -U fruits -c 1 -j 1 -T 10 -n -M prepared -f /tmp/pgbench-rtt.sql fruits 2>&1 | tee ${{REPO_DIR}}/logs/pgbench-rtt-${{RUNTIMECMD.name}}-${{ITERATION}}.log
     - queue-download: ${{REPO_DIR}}/logs/pgbench-rtt-${{RUNTIMECMD.name}}-${{ITERATION}}.log
 
   monitor-otel-lgtm:
