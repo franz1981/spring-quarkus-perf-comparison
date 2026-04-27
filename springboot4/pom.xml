@@ -21,6 +21,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.agroal</groupId>
+			<artifactId>agroal-pool</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.agroal</groupId>
+			<artifactId>agroal-api</artifactId>
+			<version>3.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

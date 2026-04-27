@@ -5,10 +5,6 @@ spring:
     username: fruits
     password: fruits
     url: jdbc:postgresql://localhost:5432/fruits
-    hikari:
-      # @simasch: Sets the jdbc pool size to be the same that Quarkus uses
-      # see https://github.com/quarkusio/spring-quarkus-perf-comparison/pull/114
-      maximum-pool-size: 50
   jackson:
     default-property-inclusion: non_empty
   jpa:
