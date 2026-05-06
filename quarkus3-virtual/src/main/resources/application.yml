@@ -20,6 +20,10 @@ quarkus:
       sampler:
         ~: traceidratio
         arg: 0.1
+  vertx:
+    # with loom, 1 event loop is like a poller managing virtual threads
+    # See https://github.com/quarkusio/spring-quarkus-perf-comparison/pull/479
+    event-loops-pool-size: 1
 
 "%prod":
   quarkus:
